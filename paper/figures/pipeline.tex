@@ -1,0 +1,23 @@
+% Detection pipeline used in the simulation.
+\begin{tikzpicture}[
+  font=\scriptsize, >=Stealth, node distance=0.32cm,
+  blk/.style={draw, rounded corners=2pt, fill=gray!10, align=center, inner sep=3pt, minimum height=0.85cm},
+  new/.style={blk, fill=green!15, draw=green!40!black, thick},
+  atk/.style={->, thick, red!75!black, densely dashed}
+]
+\node[blk] (pmu) {PMUs\\$z_t=Hx_t+e_t$};
+\node[blk, right=of pmu] (pdc) {PDC};
+\node[blk, right=of pdc] (se) {WLS state\\estimation};
+\node[blk, right=of se] (bdd) {Residual\\$\chi^2$ test};
+\node[new, minimum width=3.0cm] (ml) at ($(pdc)!0.5!(se) + (0,-1.35)$) {Lightweight detector\\(features of $z_t$, $\hat{x}_t$, $J_t$)};
+\node[blk] (al) at ($(bdd |- ml) + (0.45,0)$) {Alarm};
+\draw[->] (pmu) -- (pdc);
+\draw[->] (pdc) -- (se);
+\draw[->] (se) -- (bdd);
+\draw[->] (pdc.south) -- (pdc.south |- ml.north);
+\draw[->] (se.south) -- (se.south |- ml.north);
+\draw[->] (bdd.south) -- (bdd.south |- al.north);
+\draw[->] (ml) -- (al);
+\node[red!70!black, above=0.25cm of pmu, align=center] (a) {FDI: $z_t+a_t$};
+\draw[atk] (a) -- (pmu);
+\end{tikzpicture}

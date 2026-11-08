@@ -1,0 +1,60 @@
+% Single-line and communication diagram of the MSU/ORNL power system testbed
+% (redrawn from the dataset documentation).
+\begin{tikzpicture}[
+  font=\footnotesize, >=Stealth,
+  bus/.style={line width=1.6pt},
+  brk/.style={draw, fill=white, minimum width=7pt, minimum height=7pt, inner sep=0pt},
+  ied/.style={draw, rounded corners=1pt, fill=blue!8, minimum width=17pt, minimum height=10pt, inner sep=1pt, font=\scriptsize},
+  box/.style={draw, rounded corners=2pt, fill=gray!10, align=center, inner sep=2.5pt, font=\scriptsize},
+  comm/.style={->, thin, gray!70!black},
+  atk/.style={->, thick, red!75!black, densely dashed}
+]
+% generators and buses
+\node[draw, circle, minimum size=13pt, inner sep=0pt] (g1) at (0,0) {$\sim$};
+\node[below=1pt of g1, font=\scriptsize] {G1};
+\draw[bus] (0.75,-0.35) -- (0.75,0.35) node[above, font=\scriptsize] {B1};
+\draw (g1) -- (0.75,0);
+\node[draw, circle, minimum size=13pt, inner sep=0pt] (g2) at (7.5,0) {$\sim$};
+\node[below=1pt of g2, font=\scriptsize] {G2};
+\draw[bus] (6.75,-0.35) -- (6.75,0.35) node[above, font=\scriptsize] {B3};
+\draw (g2) -- (6.75,0);
+\draw[bus] (3.75,-0.35) -- (3.75,0.35) node[above, font=\scriptsize] {B2};
+\draw[->] (3.75,-0.35) -- (3.75,-0.75) node[below, font=\scriptsize] {Load};
+% breakers and lines
+\node[brk] (br1) at (1.25,0) {}; \node[above=2pt of br1, font=\scriptsize] {BR1};
+\node[brk] (br2) at (3.25,0) {}; \node[above=2pt of br2, font=\scriptsize] {BR2};
+\node[brk] (br3) at (4.25,0) {}; \node[above=2pt of br3, font=\scriptsize] {BR3};
+\node[brk] (br4) at (6.25,0) {}; \node[above=2pt of br4, font=\scriptsize] {BR4};
+\draw (0.75,0) -- (br1) -- node[above=1pt, font=\scriptsize] {Line L1} (br2) -- (3.75,0) -- (br3) -- node[above=1pt, font=\scriptsize] {Line L2} (br4) -- (6.75,0);
+% relays / PMUs
+\foreach \i/\x in {1/1.25,2/3.0,3/4.5,4/6.25}{
+  \node[ied] (r\i) at (\x,-1.2) {R\i};
+  \draw[densely dotted] (r\i) -- (\x,-0.12);
+}
+\node[font=\tiny, align=center] at (0.15,-1.2) {IED +\\PMU};
+% network
+\node[box] (sw) at (3.75,-2.35) {Substation switch};
+\foreach \i in {1,...,4}{ \draw[comm, <->] (r\i.south) -- (sw); }
+\node[box] (pdc) at (6.3,-2.35) {PDC};
+\draw[comm] (sw) -- (pdc);
+\node[box] (rt) at (3.75,-3.25) {Router};
+\draw[comm, <->] (sw) -- (rt);
+\draw[comm] (pdc) |- (rt);
+% control room
+\node[box] (snort) at (0.85,-4.3) {Snort};
+\node[box] (sys) at (2.15,-4.3) {Syslog};
+\node[box] (cp) at (3.6,-4.3) {Control\\panel};
+\node[box] (opdc) at (5.0,-4.3) {OpenPDC};
+\node[box, fill=green!15, draw=green!40!black, thick] (ids) at (6.85,-4.3) {Detector\\(this work)};
+\draw[dashed, gray] (0.3,-3.75) rectangle (7.7,-5.2);
+\node[font=\scriptsize, gray!50!black, anchor=south west] at (0.3,-5.2) {Control room};
+\draw[comm] (rt) -- (sys);
+\draw[comm] (rt) -- (cp);
+\draw[comm] (rt) -- (opdc);
+\draw[comm] (opdc) -- (ids);
+\draw[comm] (snort) -- (sys);
+% attacker
+\node[box, fill=red!10, draw=red!60!black] (att) at (0.75,-2.35) {Attacker};
+\draw[atk] (att) -- (sw);
+\node[font=\tiny, red!60!black, align=center] at (1.75,-2.85) {injected commands,\\settings or data};
+\end{tikzpicture}

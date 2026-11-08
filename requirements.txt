@@ -1,0 +1,10 @@
+lightgbm==4.7.0
+matplotlib==3.11.2
+numpy==2.4.6
+pandapower==3.5.6
+pandas==2.3.3
+py7zr==1.1.4
+pyarrow==26.0.1
+requests==2.34.2
+scikit-learn==1.9.1
+scipy==1.18.1

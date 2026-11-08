@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.synctex.gz
+Shahi_2026_SmartGrid_IDS.pdf

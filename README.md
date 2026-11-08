@@ -2,7 +2,7 @@
 
 Evaluation of machine learning attack detectors for power systems on (1) the public MSU/ORNL power system attack dataset recorded on a PMU-relay testbed and (2) a 42-day IEEE 14-bus simulation with phasor measurement units (PMUs), weighted least-squares state estimation and false data injection (FDI).
 
-The preprint is available in [`paper/main.pdf`](paper/main.pdf).
+The preprint is available in [`paper/main.pdf`](paper/main.pdf) and on Zenodo: [doi:10.5281/zenodo.24054176](https://doi.org/10.5281/zenodo.24054176).
 
 ## Key findings
 
@@ -71,6 +71,7 @@ U. Adhikari, S. Pan, T. Morris, R. Borges and J. Beaver, *Power system attack da
   author = {Haider Md. Faiyaz Hussain Shahi},
   year   = {2026},
   note   = {Preprint},
+  doi    = {10.5281/zenodo.24054176},
   url    = {https://github.com/shahihussainofficial1/smartgrid-ids-generalization}
 }
 ```

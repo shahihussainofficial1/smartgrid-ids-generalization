@@ -21,7 +21,9 @@
 
 \author{\IEEEauthorblockN{Haider Md. Faiyaz Hussain Shahi}
 \IEEEauthorblockA{\textit{Independent Researcher} \\
-shahihussainofficial1@gmail.com}
+\url{https://orcid.org/0009-0004-0940-9096} \\
+shahihussainofficial1@gmail.com \\
+DOI: \href{https://doi.org/10.5281/zenodo.24054176}{10.5281/zenodo.24054176}}
 }
 
 \maketitle
@@ -47,7 +49,7 @@ This paper examines this issue with two complementary data sources: the public p
 \end{enumerate}
 
 \section{Related Work}
-Hink \emph{et al.}~\cite{hink2014ml} applied several machine learning classifiers to the testbed data, and Pan \emph{et al.} combined synchrophasor measurements and logs in a data-mining-based hybrid intrusion detection system~\cite{pan2015hybrid} and in a classifier of disturbances and attacks~\cite{pan2015classification}. Liu \emph{et al.}~\cite{liu2011fdi} showed that an attacker who knows the measurement model can inject false data $a=Hc$ that leaves the WLS residual unchanged and therefore bypasses the BDD. Ozay \emph{et al.}~\cite{ozay2016ml}, Esmalifalak \emph{et al.}~\cite{esmalifalak2017stealthy} and He \emph{et al.}~\cite{he2017deep} detected such attacks with machine learning methods, including deep learning in~\cite{he2017deep}, on simulated IEEE test systems. General pitfalls of machine learning for intrusion detection are discussed in~\cite{sommer2010closed,arp2022dos}, and labeling and design problems of a widely used network intrusion dataset are documented in~\cite{engelen2021cicids}. Our study applies such scrutiny to power system attack detection and combines it with a simulation in which generalization to unseen operating conditions and attack targets can be controlled.
+Hink \emph{et al.}~\cite{hink2014ml} applied several machine learning classifiers to the testbed data, and Pan \emph{et al.} combined synchrophasor measurements and logs in a data-mining-based hybrid intrusion detection system~\cite{pan2015hybrid} and in a classifier of disturbances and attacks~\cite{pan2015classification}. Liu \emph{et al.}~\cite{liu2011fdi} showed that an attacker who knows the measurement model can inject false data $a=Hc$ that leaves the WLS residual unchanged and therefore bypasses the BDD. Ozay \emph{et al.}~\cite{ozay2016ml}, Esmalifalak \emph{et al.}~\cite{esmalifalak2017stealthy} and He \emph{et al.}~\cite{he2017deep} detected such attacks with machine learning methods, including deep learning in~\cite{he2017deep}, on simulated IEEE test systems. General pitfalls of machine learning for intrusion detection are discussed in~\cite{sommer2010closed,arp2022dos}, and labeling and design problems of a widely used network intrusion dataset are documented in~\cite{engelen2021cicids}. We apply such scrutiny to power system attack detection, together with a simulation in which operating conditions and attack targets are controlled.
 
 \section{Systems and Data}
 \subsection{PMU-Relay Testbed}
@@ -65,9 +67,9 @@ We simulate the IEEE 14-bus system (Fig.~\ref{fig:ieee14}) with pandapower~\cite
 
 \begin{figure}[t]
 \centering
-\resizebox{0.82\columnwidth}{!}{\input{figures/ieee14.tex}}
+\resizebox{0.72\columnwidth}{!}{\input{figures/ieee14.tex}}
 
-\vspace{6pt}
+\vspace{4pt}
 \resizebox{\columnwidth}{!}{\input{figures/pipeline.tex}}
 \caption{Top: IEEE 14-bus system with the four PMU buses. Bottom: simulated measurement and detection chain. The detector runs next to state estimation and uses the PMU data, the state estimate and the residual.}
 \label{fig:ieee14}
@@ -181,13 +183,10 @@ Aggregate & LGBM & 0.79 & 0.32 & 0.002 & 0.36 & 0.003 & 0.793 \\
 \end{tabular}
 \end{table}
 
-\subsection{Computational Footprint}
-For the binary testbed task with physics and set-normalized features, the decision tree needs 44\,kB and 0.13\,ms per sample on a laptop CPU, logistic regression 6.7\,kB and 0.69\,ms, and LGBM 1.0\,MB and 1.3\,ms, sizes that are compatible with an embedded gateway or PDC. The RF needs 73\,MB and 31\,ms and is better suited to a control-room server.
-
 \section{Discussion}
 \textbf{Evaluation.} On the testbed data, a random split of samples measures how well a classifier recognizes the operating condition of a set, not how well it detects attacks under new conditions. We recommend grouping the evaluation by set, reporting the majority-class baseline and the false-alarm rate, and comparing random-split and grouped scores; a large gap indicates a shortcut. In PMU-based FDI detection, the same issue appears as leakage between samples of one episode, and the more demanding question is whether attacks on new targets are detected. Reporting a threshold-free measure such as the ROC-AUC alongside detection rates separates the ability to rank attacks from the choice of threshold.
 
-\textbf{Deployment.} The simulation suggests that a tree ensemble on PMU measurements and the WLS residual, with its alarm threshold calibrated on recent normal operation, can complement the BDD against stealthy FDI, including attacks on buses not seen during training. On the testbed data, by contrast, per-sample PMU features were not sufficient in our experiments; detecting imitated faults and malicious commands likely requires sequences of measurements and the context of relay commands and settings.
+\textbf{Deployment.} The simulation suggests that a tree ensemble on PMU measurements and the WLS residual, with its alarm threshold calibrated on recent normal operation, can complement the BDD against stealthy FDI, including attacks on buses not seen during training. On the testbed data, by contrast, per-sample PMU features were not sufficient in our experiments; detecting imitated faults and malicious commands likely requires sequences of measurements and the context of relay commands and settings. On a laptop CPU, the binary testbed models need 44\,kB and 0.13\,ms per sample (DT) and 1.0\,MB and 1.3\,ms (LGBM), compatible with an embedded gateway or PDC, whereas the RF needs 73\,MB and 31\,ms.
 
 \textbf{Limitations.} The released testbed data contain neither time stamps nor run identifiers, so we could not label samples by their physical state or group them more finely than by set. The simulation uses one test system, a linear PMU measurement model, an attacker who knows $H$, synthetic load profiles and one noise level, and it does not model communication delays or missing data. Hyperparameters were fixed and not tuned.
 
